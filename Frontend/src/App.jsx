@@ -4,12 +4,14 @@ import GC from './components/GC';
 import AgeDistributionChart from './components/AgeDistributionChart';
 import SubscriptionDistributionPie from './components/SubscriptionDistributionPie';
 import SupportCallsPerSubTypeChart from './components/SupportCallsPerSubTypeChart';
-import PaymentDelayvsUsageFreq from './components/PaymentDelayvsUsageFreq';
+import PaymentDelayvsSuppCalls from './components/PaymentDelayvsSuppCalls';
 function App() {
   const [custId, setCustId] = useState("")
   const [custData, setCustData] = useState({})
   const [valid, setValid] = useState(true);
   const [risk, setRisk] = useState("");
+  const [clv, setclv] = useState(0);
+
   const getData = async () => {
     if (custId == "" || isNaN(custId)) {
       setValid(false);
@@ -34,72 +36,75 @@ function App() {
       setRisk("High Risk");
     }
     setCustData(data)
+    calculateCLV(data);
   }
   const handleChange = (e) => {
     setCustId(e.target.value)
   }
+
+  const calculateCLV = (data) => {
+    const totalSpend = data.total_spend;
+    const usageFrequency = data.usage_frequency;
+    const tenureYears = data.tenure / 12;
+    const churnRate = data.yes;
+    const customerLifespan = 1 / churnRate;
+    const totalPurchases = usageFrequency * tenureYears;
+    const apv = totalSpend / totalPurchases;
+    const clvValue = apv * usageFrequency * customerLifespan;
+    setclv(clvValue.toFixed(2));
+  }
+
   return (
     <>
-      <div className="container relative top-10 flex w-screen">
-        <div className='border-black border-1 p-8 min-w-25% ml-20 shadow-violet-800 shadow-xl  bg-slate-800 rounded-2xl'>
-          <h1 className='text-2xl text-white font-bold py-8 pt-0'>Enter Customer ID</h1>
-
-          <input className='bg-white border-2 rounded-lg text-m w-full' type="text" name="custId" value={custId} onChange={handleChange} />
+      <div className='text-white w-full text-xl bg-[#202938] p-2'>
+        <div className='ml-[10%]'>Customer Retention Assessment</div>
+      </div>
+      <div className="container relative mt-[2%] w-screen">
+        <div className='bg-[#202938] rounded-lg w-[80%] m-auto pb-[2%]'>
+          <div className=' flex justify-center item-center'>
+            <input
+              placeholder='Enter Customer ID (eg 1001)'
+              className='bg-[#384152] border-[#2563ea] border-2 text-[#9399a6] h-8 self-center rounded-lg text-m w-[85%]' type="text" name="custId" value={custId} onChange={handleChange} />
+            <button className='ml-5 text-m bg-[#2563ea] py-2 w-fit px-2 my-3 font-bold rounded-lg' type='submit' onClick={getData}>Search</button>
+          </div>
           {!valid && <div className='text-m text-red-600 text-center font-bold'>Invalid Customer Id</div>}
-          <button className='border-gray-900 text-m bg-cyan-200 border-2 w-full my-3 font-bold rounded-lg' type='submit' onClick={getData}>Submit</button>
-          {Object.keys(custData).length >= 1 && <div className="cdata text-s text-white">
-            <div><b>Customer Id:</b> {custData.customer_id}</div>
-            <div><b>Age:</b> {custData.age}</div>
-            <div><b>Gender:</b> {custData.gender}</div>
-            <div><b>Total Spend:</b> {custData.total_spend} rupees</div>
-            <div><b>Tenure:</b> {custData.tenure} months</div>
-            <div><b>Support Calls:</b> {custData.support_calls}</div>
-            <div><b>Subscription Type:</b> {custData.subscription_type}</div>
-            <div><b>Payment Delay:</b> {custData.payment_delay} days</div>
-            <div><b>Last Interaction:</b> {custData.last_interaction} days</div>
-            <div><b>Contract Length:</b> {custData.contract_length}</div>
-            <div><b>Usage Frequency:</b> {custData.usage_frequency}</div>
-            <div><b>Probability of leaving service:</b> {100 * custData.yes}%</div>
-            {/* <div><b>:</b> {100 * custData.no}%</div> */}
-          </div>}
-        </div>
-        {Object.keys(custData).length >= 1 &&
-          <div className='items-center'>
-            <GC prob={custData.yes} />
-            <div className='text-white text-center mt-4 ml-10 font-bold text-xl '>{risk}</div>
+          <div className='flex space-x-25'>
+            {Object.keys(custData).length >= 1 && <div className="cdata text-s shadow-black pr-10 shadow-lg text-white ml-[5%] space-y-1">
+              <div><b>Customer Id:</b> {custData.customer_id}</div>
+              <div><b>Age:</b> {custData.age}</div>
+              <div><b>Gender:</b> {custData.gender}</div>
+              <div><b>Total Spend:</b> {custData.total_spend} rupees</div>
+              <div><b>Tenure:</b> {custData.tenure} months</div>
+              <div><b>Support Calls:</b> {custData.support_calls}</div>
+              <div><b>Subscription Type:</b> {custData.subscription_type}</div>
+              <div><b>Payment Delay:</b> {custData.payment_delay} days</div>
+              <div><b>Last Interaction:</b> {custData.last_interaction} days</div>
+              <div><b>Contract Length:</b> {custData.contract_length}</div>
+              <div><b>Usage Frequency:</b> {custData.usage_frequency}</div>
+              <div><b>Probability of leaving service:</b> {100 * custData.yes}%</div>
+              {/* <div><b>:</b> {100 * custData.no}%</div> */}
+            </div>}
+            {Object.keys(custData).length >= 1 &&
+              <div className='items-center'>
+                <GC prob={custData.yes} />
+                <div className='text-white text-center font-bold text-xl ml-15'>{risk}</div>
+                <div className='text-white ml-15 mt-5 border-2 border-white rounded-xl text-xl p-5'>
+                  Customer Lifetime Value = {clv}
+                </div>
+              </div>
+            }
           </div>
-        }
-        {Object.keys(custData).length >= 1 && <div className='mt-20 bg-slate-900 h-50 p-3 ml-10 shadow-black shadow-xl'>
 
-          <div className='flex text-lg text-white gap-x-5 items-center'>
-            <div className='bg-red-600 w-25 h-5 my-5'></div>
-            71%-100% (High Risk)
-          </div>
-          <div className='flex text-lg text-white gap-x-5 items-center'>
-            <div className='bg-yellow-300 w-25 h-5 my-5'></div>
-            41%-70% (Medium Risk)
-          </div>
-          <div className='flex text-lg text-white gap-x-5 items-center'>
-            <div className='bg-green-600 w-25 h-5 my-5'></div>
-            0%-40% (Low Risk)
-          </div>
-        </div>}
-        {/* 
-        Gauge Chart to display risk.
-        Age Distribution of Customers (Histogram)
-        Subscription Type Distribution (Pie Chart)
-        Support Calls per Subscription Type (Bar Chart)
-        Payment Delays vs. Usage Frequency (Scatter Plot)
-        */}
+        </div>
       </div>
       <div>
-        <div className='flex items-center'>
+        <div className='flex'>
           <AgeDistributionChart />
           <SubscriptionDistributionPie />
         </div>
-        <div className='flex items-center'>
+        <div className='flex'>
           <SupportCallsPerSubTypeChart />
-          {Object.keys(custData).length >= 1 && <PaymentDelayvsUsageFreq payment_delay={custData.payment_delay} usage_frequency={custData.usage_frequency} />}
+          <PaymentDelayvsSuppCalls payment_delay={custData.payment_delay} support_calls={custData.support_calls} />
         </div>
 
       </div>

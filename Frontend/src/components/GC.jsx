@@ -8,7 +8,7 @@ const GC = ({ prob }) => {
         />
     ), [prob]);
     return (
-        <div className='w-100 h-50 mt-20 ml-15 shadow-black shadow-2xl'>
+        <div className='w-100 h-50 mt-5 ml-15 bg-[#202938] rounded-2xl'>
             {memoizedGauge}
         </div>
     )

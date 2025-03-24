@@ -13,7 +13,7 @@ const AgeDistributionChart = () => {
         fetchChartData()
     }, [])
     return (
-        <div className='w-1/2 mt-40  text-center shadow-black shadow-xl ml-5 pb-5 mb-10'>
+        <div className='w-120 mt-10 bg-[#202938] text-center shadow-black shadow-xl ml-[10%] pb-5 mb-10'>
             <h2 className='text-white text-xl pt-5'>Age Distribution</h2>
             <ResponsiveContainer width="100%" height={350}>
                 <BarChart data={ageData}>

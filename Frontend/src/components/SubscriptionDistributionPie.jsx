@@ -16,7 +16,7 @@ const SubscriptionDistributionPie = () => {
     }, [])
 
     return (
-        <div className='text-white w-130 ml-10 shadow-xl shadow-black mt-30'>
+        <div className='w-130 mt-10 bg-[#202938] text-center shadow-black shadow-xl ml-5 pb-5 mb-10 text-white'>
             <div className="w-full h-[400px] mx-auto mt-5 p-4 rounded-lg shadow-lg">
                 <h2 className="text-center font-semibold text-lg mb-2">Subscription Distribution</h2>
                 <ResponsiveContainer width="100%" height="100%">
