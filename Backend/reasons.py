@@ -3,7 +3,7 @@ import google.generativeai as genai
 import os
 import marko
 from requests.exceptions import RequestException, Timeout
-apikey = "AIzaSyCj1E9VFmppU6pHnJpxq_oELpDF0uOgscs"
+apikey = os.environ['GEMINI_API_KEY']
 
 genai.configure(api_key=apikey)
 
