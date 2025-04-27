@@ -26,7 +26,7 @@ Customer Retention Assessment (CRA) is a project designed to help businesses ana
 Follow these steps to set up the project locally:
 
 # 1. Clone the repository
-git clone https://github.com/yourusername/cra-project.git
+git clone https://github.com/Chitucoder/Customer-Retention-Assessment.git
 cd cra-project
 
 # 2. Create and activate a virtual environment
