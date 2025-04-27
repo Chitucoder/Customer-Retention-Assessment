@@ -30,13 +30,13 @@ cd Customer-Retention-Assessment
 
 # 2. Create and activate a virtual environment
 python -m venv venv
-source venv/bin/activate  * On Windows, use 'venv\Scripts\activate' *
+source venv/bin/activate  On Windows, use 'venv\Scripts\activate'
 
 # 3. Install the required backend dependencies
 pip install -r requirements.txt
 
 # 4. Run the Flask backend
-python backend.py  * The backend will be running at http://127.0.0.1:5000 *
+python backend.py  The backend will be running at http://127.0.0.1:5000
 
 # 5. Navigate to the frontend directory
 cd frontend
