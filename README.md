@@ -17,9 +17,8 @@ Customer Retention Assessment (CRA) is a project designed to help businesses ana
 - **Backend**: Flask
 - **Frontend**: React
 - **Machine Learning**: Random Forest (scikit-learn)
-- **Database**: SQLite (or another database you prefer)
+- **Database**: SQLite 
 - **Data Visualization**: Matplotlib / Plotly / Seaborn
-- **Deployment**: Docker (optional, if you're using it for deployment)
 
 ## Installation
 
@@ -27,7 +26,7 @@ Follow these steps to set up the project locally:
 
 # 1. Clone the repository
 git clone https://github.com/Chitucoder/Customer-Retention-Assessment.git
-cd cra-project
+cd Customer-Retention-Assessment
 
 # 2. Create and activate a virtual environment
 python -m venv venv
