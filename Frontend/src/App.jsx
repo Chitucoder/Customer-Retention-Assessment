@@ -51,6 +51,7 @@ function App() {
     const totalPurchases = usageFrequency * tenureYears;
     const apv = totalSpend / totalPurchases;
     const clvValue = apv * usageFrequency * customerLifespan;
+    console.log(custData.response)
     setclv(clvValue.toFixed(2));
   }
 
@@ -59,8 +60,8 @@ function App() {
       <div className='text-white w-full text-xl bg-[#202938] p-2'>
         <div className='ml-[10%]'>Customer Retention Assessment</div>
       </div>
-      <div className="container relative mt-[2%] w-screen">
-        <div className='bg-[#202938] rounded-lg w-[80%] m-auto pb-[2%]'>
+      <div className="container relative mt-[2%] ml-30 w-screen">
+        <div className='bg-[#202938] rounded-lg w-[100%] m-auto pb-[2%]'>
           <div className=' flex justify-center item-center'>
             <input
               placeholder='Enter Customer ID (eg 1001)'
@@ -69,7 +70,7 @@ function App() {
           </div>
           {!valid && <div className='text-m text-red-600 text-center font-bold'>Invalid Customer Id</div>}
           <div className='flex space-x-25'>
-            {Object.keys(custData).length >= 1 && <div className="cdata text-s shadow-black pr-10 shadow-lg text-white ml-[5%] space-y-1">
+            {Object.keys(custData).length >= 1 && <div className="cdata text-s shadow-black pr-10 shadow-lg text-white ml-[5%] w-[30%] space-y-1">
               <div><b>Customer Id:</b> {custData.customer_id}</div>
               <div><b>Age:</b> {custData.age}</div>
               <div><b>Gender:</b> {custData.gender}</div>
@@ -94,8 +95,13 @@ function App() {
               </div>
             }
           </div>
-
         </div>
+      </div>
+      <div className='text-white flex rounded-xl shadow-black shadow-xl justify-center text-xl bg-[#243c69] my-8 mx-30'>
+        {Object.keys(custData).length >= 1 && <div>
+          <h2 className='text-3xl m-5'>Reasons </h2>
+          <div className='m-5 bg-[#374f7b] p-3 rounded-xl'>{custData.response}</div>
+        </div>}
       </div>
       <div>
         <div className='flex'>

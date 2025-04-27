@@ -2,6 +2,7 @@ import pickle
 import os
 from webbrowser import get
 import pandas as pd
+import requests
 from flask_cors import CORS
 from flask import Flask,request
 from flask import jsonify
@@ -12,6 +13,8 @@ import sqlalchemy
 from sqlalchemy import create_engine, Column, Integer, String,text
 from sqlalchemy.orm import declarative_base, sessionmaker
 import itertools
+import reasons
+
 app = Flask(__name__)
 CORS(app)   
 
@@ -82,6 +85,15 @@ class CustomerChurnClassifier:
 
 customer_churn = CustomerChurnClassifier('files\customer_churn_random_forest_model.pkl', 'files\encoder.pkl')
 
+
+def is_connected():
+    try:
+        requests.get("https://www.google.com", timeout=5)
+        return True  
+    except requests.RequestException:
+        return False
+
+
 @app.route("/predict",methods=["POST"])
 def info():
     custId = request.data.decode('utf-8')
@@ -101,6 +113,10 @@ def info():
     )
     fd['yes'] = proba[1]
     fd['no'] = proba[0]
+    if(is_connected()):
+        fd = reasons.rec(fd)
+    else:
+        fd['response'] = "Check your internet connection and try again."
     return jsonify(fd)
     
 @app.route("/agedistributiondata",methods=["GET"])
